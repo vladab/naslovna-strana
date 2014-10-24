@@ -33,6 +33,26 @@ class EmailSendingCron {
             return;
         }
     }
+    public static function SendWelcomeEmail( $email_to ) {
+
+        // Subject
+        $email_subject = 'Uspesno prijava na NaslovnaStrana.com';
+        $sources = NaslovnaStrana::PrepareDataEmail();
+        $images = NaslovnaStrana::ReturnImages( '50%', $sources, 'max-width: 445px;min-width: 290px;' );
+
+        // User Name
+        $parts = explode( "@", $email_to );
+        $username = $parts[0];
+        $email_body = "<html><body><h2>Zdravo $username,</h2>
+                <p>Hvala Vam na registraciji na nasoj listi.</p>
+                <p>POvo je pregled stampe za danas:</p>$images</body></html>";
+        // Unsubscribe link
+        $code = base64_encode($user_email);
+        $unsubscribe_link = home_url( '/?_unsubscribe=true&code=' . $code . '&id=' . $user['id'] );
+        $email_body .= '<p style="text-align: center;font-size: 11px;display:block;">Ako zelite da se odjavite sa liste to mozete ucinit na ovom linku: <a href="' . $unsubscribe_link . '" >odjava!</a></p>';
+
+        EmailSendingCron::SendEmail( $email_to, $email_subject, $email_body );
+    }
 	private function SendEmail( $email_to, $email_subject, $email_body ) {
 
 		$sender_name = "Naslovna Strana";

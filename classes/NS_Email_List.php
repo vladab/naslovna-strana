@@ -48,6 +48,9 @@ class NS_Email_List {
                 'creation_date' => current_time( 'mysql' )
             );
             $wpdb->insert( $wpdb->prefix . NASLOVAN_STRANA_EMAIL_LIST_TABLE_NAME, $data_to_insert );
+
+            // Send Welcome email
+            NS_Email_List::SendWelcomeEmail($email_address);
         }
     }
 }
