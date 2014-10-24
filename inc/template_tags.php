@@ -36,7 +36,11 @@ function ns_print_preview_images() {
     <?php
 }
 
-function meybe_print_all() {
+/**
+ * Function for usage in templates
+ * Usage: <?php if( function_exists('maybe_print_all' ) ) { meybe_print_all(); }?>
+ */
+function maybe_print_all() {
     echo '<div class="ns_headline"><p>Svako jutro naslovne strane dnevnih novina u Vašem sandučetu!</p></div>';
     ns_print_input_form();
     ns_print_preview_images();
