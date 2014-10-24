@@ -16,6 +16,7 @@ define( 'NASLOVAN_STRANA_EMAIL_LIST_TABLE_NAME', 'email_list');
 include NASLOVNA_STRANA_PATH . 'classes/NaslovnaStrana.php';
 include NASLOVNA_STRANA_PATH . 'classes/EmailSendingCron.php';
 include NASLOVNA_STRANA_PATH . 'classes/NS_Email_List.php';
+include NASLOVNA_STRANA_PATH . 'inc/template_tags.php';
 
 /**
  * Activation and uninstall scripts for installind and importing database
