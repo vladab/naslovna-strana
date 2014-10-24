@@ -200,14 +200,14 @@ class NaslovnaStrana {
                 'img_src_address' => 'http://e24.24sata.rs/issues/24sata_'. date('dmy') .'/pages/large/24sata_'. date('dmy') .'-000001.jpg',
                 'has_weekends_isue' => 'no',
             ),
-//            'Magazin Tabloid' => array(
-//                'url' => 'http://www.magazin-tabloid.com/casopis/',
-//                'type' => 'dom_query',
-//                'dom_query_string' => '//a[@class="fancybox"]/img',
-//                'html_object_src_type' => 'src',
-//
-//                'relative' => true,
-//            ),
+            'Magazin Tabloid' => array(
+                'url' => 'http://www.magazin-tabloid.com/casopis/',
+                'type' => 'dom_query',
+                'dom_query_string' => '//a[@class="fancybox"]/img',
+                'html_object_src_type' => 'src',
+
+                'relative' => true,
+            ),
             'Vijesti' => array(
                 'url' => 'http://www.vijesti.me/p/naslovnice/'. date('Y').'-'.date('m').'-'.date('d'),
                 'type' => 'dom_query',
