@@ -2,8 +2,8 @@
 /*
 Plugin Name: Naslovna Strana
 Plugin URI: http://v85dev.com
-Description: Secret
-Version: 1.0
+Description: Naslovna Strana plugin for sending emails of all newspapers in Serbia
+Version: 1.1
 Author: Vladica Bibeskovic
 Author URI: http://v85dev.com/
 */
@@ -11,10 +11,27 @@ Author URI: http://v85dev.com/
 /* options page */
 define( 'NASLOVNA_STRANA_PATH', WP_PLUGIN_DIR . '/' . basename( dirname( __FILE__ ) ) . '/' );
 define( 'NASLOVNA_STRANA_RESOURCE_URL', plugins_url( 'resources/', __FILE__ ) );
+define( 'NASLOVAN_STRANA_EMAIL_LIST_TABLE_NAME', 'email_list');
 
 include NASLOVNA_STRANA_PATH . '/update.php';
-include NASLOVNA_STRANA_PATH . '/NaslovnaStrana.php';
-include NASLOVNA_STRANA_PATH . '/EmailSendingCron.php';
+include NASLOVNA_STRANA_PATH . '/classes/NaslovnaStrana.php';
+include NASLOVNA_STRANA_PATH . '/classes/EmailSendingCron.php';
+
+/**
+ * Activation and uninstall scripts for installind and importing database
+ *
+ */
+register_activation_hook(__FILE__, 'naslovna_strana_plugin_activate_plugin' );
+register_uninstall_hook(__FILE__, 'naslovna_strana_plugin_remove_plugin' );
+
+function naslovna_strana_plugin_activate_plugin() {
+    include NASLOVNA_STRANA_PATH . 'classes/default_options.php';
+    naslovna_strana_plugin_activate();
+}
+function naslovna_strana_plugin_remove_plugin() {
+    include NASLOVNA_STRANA_PATH . 'classes/default_options.php';
+    naslovna_strana_plugin_remove_data();
+}
 
 // Add setting link on plugin page
 add_filter( 'plugin_action_links', 'naslovna_add_action_link', 10, 2 );
@@ -26,15 +43,7 @@ function naslovna_add_action_link( $links, $file ) {
     }
     return $links;
 }
-// Activation Hook
-register_activation_hook(__FILE__, 'nss_activate_plugin' );
-function nss_activate_plugin() {
-    $mnt_url = get_site_url();
-    $usr = wp_get_current_user();
-    $name = 'Naslovnas%20Strana';
-    $url = 'http://www.google-analytics.com/collect?v=1&tid=UA-5795585-13&cid=123456&t=event&ec='.$name.'&ea='.$usr->user_email.'&el='.$mnt_url.'&cs=newsletter&cm=email&cn=062413&cm1=1';
-    file_get_contents($url);
-}
+
 // Testing function
 function view_naslovna_strana() {
 	echo NaslovnaStrana::ReturnImages();
