@@ -13,8 +13,9 @@ define( 'NASLOVNA_STRANA_PATH', WP_PLUGIN_DIR . '/' . basename( dirname( __FILE_
 define( 'NASLOVNA_STRANA_RESOURCE_URL', plugins_url( 'resources/', __FILE__ ) );
 define( 'NASLOVAN_STRANA_EMAIL_LIST_TABLE_NAME', 'email_list');
 
-include NASLOVNA_STRANA_PATH . '/classes/NaslovnaStrana.php';
-include NASLOVNA_STRANA_PATH . '/classes/EmailSendingCron.php';
+include NASLOVNA_STRANA_PATH . 'classes/NaslovnaStrana.php';
+include NASLOVNA_STRANA_PATH . 'classes/EmailSendingCron.php';
+include NASLOVNA_STRANA_PATH . 'classes/NS_Email_List.php';
 
 /**
  * Activation and uninstall scripts for installind and importing database
@@ -40,8 +41,6 @@ class Naslovna_Strana_Plugin {
         add_filter("wp_mail_from", array( get_class(), "nss_filter_wp_mail_from" ) );
         // Load Scripts
         add_action('init', array( get_class(), 'nss_plugin_load' ) );
-        // User registration Ip
-        add_action( 'user_register', array( get_class(), 'naslovna_registration_save' ), 10, 1 );
         // Add setting link on plugin page
         add_filter( 'plugin_action_links', array( get_class(), 'naslovna_add_action_link' ), 10, 2 );
         // Add Link of the subscribers
@@ -50,7 +49,6 @@ class Naslovna_Strana_Plugin {
     public static function nss_filter_wp_mail_from_name() {
         return "Naslovna Strana";
     }
-
     public static function nss_filter_wp_mail_from() {
         return "info@naslovnastrana.com";
     }
@@ -59,17 +57,6 @@ class Naslovna_Strana_Plugin {
         wp_enqueue_script( 'jquery' );
         wp_enqueue_script( 'jquery-ui-core' );
         wp_enqueue_script( 'jquery-ui-dialog' );
-    }
-
-    public static function naslovna_registration_save( $user_id ) {
-        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-            $ip = $_SERVER['HTTP_CLIENT_IP'];
-        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        } else {
-            $ip = $_SERVER['REMOTE_ADDR'];
-        }
-        update_user_meta($user_id, '_user_ip', $ip);
     }
 
     public static function naslovna_add_action_link( $links, $file ) {
@@ -86,8 +73,26 @@ class Naslovna_Strana_Plugin {
     public static function nss_options_page_render() {
         include( NASLOVNA_STRANA_PATH . 'views/Email_Table_View.php' );
     }
+    public static function capture_number_and_email()
+    {
+        if ( isset( $_POST['nss_subscription'] ) ) {
+            if ( isset( $_POST['email_address'] ) ) {
+                $email_address = $_POST['email_address'];
+                $mobile_number = '';
+                if( isset( $_POST['mobile_number'] ) ) {
+                    $mobile_number = $_POST['mobile_number'];
+                }
+                $location_slug = '';
+                if( isset( $_POST['location'] ) ) {
+                    $location_slug = $_POST['location'];
+                }
+                NS_Email_List::add_new_email_to_the_list( $email_address, $mobile_number, $location_slug );
+            }
+        }
+    }
 }
 add_action( 'init', array( 'Naslovna_Strana_Plugin', 'init' )  );
+add_action( 'init', array( 'Naslovna_Strana_Plugin', 'capture_number_and_email' )  );
 
 
 ?>

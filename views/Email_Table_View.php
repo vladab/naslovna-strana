@@ -16,7 +16,7 @@ IP Country Search provided by <a href="http://ipinfo.io" target="_blank">ipinfo.
                     type: 'POST',
                     url: '<?php echo admin_url( 'admin-ajax.php' ); ?>',
                     data: {
-                        action: 'cg_remove_email_address_ajax',
+                        action: 'ns_remove_email_address_ajax',
                         email_id: email_id_click
                     },
                     success: function(data) {
