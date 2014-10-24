@@ -2,7 +2,7 @@
 
 class EmailSendingCron {
 
-	public function DefaultSendingCron() {
+	public static function DefaultSendingCron() {
 
 		//add_filter('wp_mail_content_type',create_function('', 'return "text/html";'));
 

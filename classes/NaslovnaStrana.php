@@ -2,7 +2,7 @@
 
 class NaslovnaStrana {
 
-    public static function  ReturnImages( $_image_size = '105', $data_sources = array(), $extra_style = '' ) {
+    public static function ReturnImages( $_image_size = '105', $data_sources = array(), $extra_style = '' ) {
         if( empty( $data_sources) ) {
             $sources = NaslovnaStrana::PrepareData();
         } else {
@@ -51,7 +51,7 @@ class NaslovnaStrana {
 		}
 	}
 
-    public function PrepareData() {
+    public static function PrepareData() {
         // Sources list
         $sources = array(
             'Informer' => array(
