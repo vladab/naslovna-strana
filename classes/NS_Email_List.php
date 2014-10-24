@@ -31,7 +31,7 @@ class NS_Email_List {
         $email_id = $_POST['email_id'];
         if( $email_id > 0 ) {
             global $wpdb;
-            $wpdb->delete( $wpdb->prefix . CGCS_TABLE_NAME , array( 'ID' => $email_id ) );
+            $wpdb->delete( $wpdb->prefix . NASLOVAN_STRANA_EMAIL_LIST_TABLE_NAME , array( 'ID' => $email_id ) );
         }
         exit();
     }

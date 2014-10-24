@@ -45,6 +45,8 @@ class Naslovna_Strana_Plugin {
         add_filter( 'plugin_action_links', array( get_class(), 'naslovna_add_action_link' ), 10, 2 );
         // Add Link of the subscribers
         add_action('admin_menu', array( get_class(), 'nss_options_page' ) );
+        // Init functions for deleting in the Email list table
+        NS_Email_List::init();
     }
     public static function nss_filter_wp_mail_from_name() {
         return "Naslovna Strana";
