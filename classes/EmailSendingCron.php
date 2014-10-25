@@ -19,12 +19,12 @@ class EmailSendingCron {
 
                 // User Name
                 $parts = explode( "@", $user_email );
-                $username = $parts[0];
+                $username = ucfirst($parts[0]);
                 $email_body = "<html><body><h2>Zdravo $username,</h2><p>Pregled stampe za danas:</p>$images</body></html>";
 
                 // Unsubscribe link
                 $code = base64_encode($user_email);
-                $unsubscribe_link = home_url( '/?_unsubscribe=true&code=' . $code . '&id=' . $user['id'] );
+                $unsubscribe_link = home_url( '/?_unsubscribe=true&code=' . $code );
                 $email_body .= '<p style="text-align: center;font-size: 11px;display:block;">Ako zelite da se odjavite sa liste to mozete ucinit na ovom linku: <a href="' . $unsubscribe_link . '" >odjava!</a></p>';
 
                 EmailSendingCron::SendEmail( $email_to, $email_subject, $email_body );
@@ -42,13 +42,13 @@ class EmailSendingCron {
 
         // User Name
         $parts = explode( "@", $email_to );
-        $username = $parts[0];
+        $username = ucfirst($parts[0]);
         $email_body = "<html><body><h2>Zdravo $username,</h2>
                 <p>Hvala Vam na registraciji na nasoj listi.</p>
-                <p>POvo je pregled stampe za danas:</p>$images</body></html>";
+                <p>Ovo je pregled stampe za danas:</p>$images</body></html>";
         // Unsubscribe link
-        $code = base64_encode($user_email);
-        $unsubscribe_link = home_url( '/?_unsubscribe=true&code=' . $code . '&id=' . $user['id'] );
+        $code = base64_encode($email_to);
+        $unsubscribe_link = home_url( '/?_unsubscribe=true&code=' . $code );
         $email_body .= '<p style="text-align: center;font-size: 11px;display:block;">Ako zelite da se odjavite sa liste to mozete ucinit na ovom linku: <a href="' . $unsubscribe_link . '" >odjava!</a></p>';
 
         EmailSendingCron::SendEmail( $email_to, $email_subject, $email_body );

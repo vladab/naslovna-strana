@@ -22,6 +22,7 @@ class Naslovana_Email_Captured_Table_List extends WP_List_Table
 	}
 
 	private function get_sql_results() {
+        // TODO: Use wordpress SQL objects instead text query
 		global $wpdb;
 		$table_name = $wpdb->prefix . NASLOVAN_STRANA_EMAIL_LIST_TABLE_NAME;
 		$sql_results = $wpdb->get_results( "
