@@ -1,7 +1,9 @@
 naslovna-strana
 ===============
 
-Extracting front pages of all print newspapers in Serbia and integrating it as email subscription newsletter. 
+Wordpress plugin for extracting front pages of all print newspapers in Serbia and integrating it as email subscription newsletter.
+
+For a live example visit: [a link](http://naslovnastrana.com)
 
 
 ![alt tag](http://i.imgur.com/xF1hlc2.png)
