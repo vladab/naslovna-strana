@@ -35,8 +35,17 @@ class NaslovnaStrana {
 
                 $local_source = "/$path/$year/$month/$day-$sanitized.jpg";
             }
-
-            $data .=  '<img src="http://'. $_SERVER['HTTP_HOST'] . $local_source . '" width="'. $_image_size .'" style="'. $extra_style .'">';
+            // Construct url for a image
+            $image_url =  $_SERVER['HTTP_HOST'] . $local_source;
+            // Overiding image size for custom size
+            if( isset( $src['override_email_width'] ) &&
+                $src['override_email_width'] == true &&
+                isset( $src['override_email_width_value'] )
+            ) {
+                $data .=  '<img src="http://'. $image_url . '"height="auto" width="'. $src['override_email_width_value'] .'">';
+            } else {
+                $data .=  '<img src="http://'. $image_url . '"height="auto" width="'. $_image_size .'" style="'. $extra_style .'">';
+            }
         }
         return $data;
     }
@@ -124,7 +133,7 @@ class NaslovnaStrana {
         );
         return $sources;
     }
-    public function PrepareDataEmail() {
+    public static function PrepareDataEmail() {
         // Sources list
         $sources = array(
             'Blic' => array(
@@ -235,6 +244,9 @@ class NaslovnaStrana {
                 'change_src' => true,
                 'change_src_offset' => -9,
                 'change_src_string' => '.jpg',
+
+                'override_email_width' => true,
+                'override_email_width_value' => '780px',
             ),
         );
         return $sources;
@@ -245,7 +257,7 @@ class NaslovnaStrana {
      * @param $source
      * @return string
      */
-    public function ImageExtractor( $source )
+    public static function ImageExtractor( $source )
 	{
         $href = '';
 		switch ($source['type']) {
@@ -286,17 +298,17 @@ class NaslovnaStrana {
 				return 0;
 				break;
 		}
-		if ( $source['relative'] ) {
+		if( isset( $source['relative'] ) && $source['relative'] ) {
 			$href = $source['url'] . $href;
 		}
-		if ( $source['change_src'] ) {
+		if( isset( $source['change_src'] ) && $source['change_src'] ) {
 			$href = substr($href, 0, $source['change_src_offset']);
 			$href .= $source['change_src_string'];
 		}
-		if ( $source['change_src_find'] ) {
+		if( isset( $source['change_src_find'] ) && $source['change_src_find'] ) {
 			$href = str_replace( $source['change_src_find'], $source['change_src_replace'], $href );
 		}
-        if( $source['_parse_url_extract_host'] ){
+        if( isset( $source['_parse_url_extract_host'] ) && $source['_parse_url_extract_host'] ){
             $parse = parse_url($source['url']);
             $href = 'http://www.' . $parse['host'] . $href;
         }
@@ -304,7 +316,7 @@ class NaslovnaStrana {
 		return $href;
 	}
 
-	private function ImageSaveByYearMonth( $path, $image_url, $img_name, $img_ext = '.jpg') {
+	private static function ImageSaveByYearMonth( $path, $image_url, $img_name, $img_ext = '.jpg') {
 		
 		$year = date("Y");
 		$month = date("m");
@@ -343,14 +355,19 @@ class NaslovnaStrana {
 		    return 0;
         }
 	}
-    public function checkRemoteFile($url)
+    public static function checkRemoteFile($url)
     {
-        if( is_array( getimagesize( $url ) ) ) {
-            return true;
+        // Check headers
+        $headers = @get_headers($url);
+        if( substr($headers[0], 9, 3) != "404" ) {
+
+            if ( is_array( @getimagesize( $url ) ) ) {
+                return true;
+            }
         }
         return false;
     }
-    public function get_url_from_pdfonline_tool($pdf_url, $extra_param = '')
+    public static function get_url_from_pdfonline_tool($pdf_url, $extra_param = '')
     {
         //resource API Key
         $api_key = 'E5EA9081F6C55751297BF6F6AF05DC9B608CA5B7';

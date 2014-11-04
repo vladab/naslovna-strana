@@ -16,13 +16,14 @@ class NS_Email_List {
         $table_name = $wpdb->prefix . NASLOVAN_STRANA_EMAIL_LIST_TABLE_NAME;
         // get Users
         // TODO: Use wordpress SQL objects instead text query
-        $results = $wpdb->get_results("SELECT id, email_address, mobile_number FROM $table_name");
+        $results = $wpdb->get_results("SELECT id, email_address, mobile_number, status FROM $table_name");
 
         $sending_emails = array();
         if (count($results) > 0) {
             foreach ($results as $item) {
-                $sending_emails['email'] = $item->email_address;
-                $sending_emails['id'] = $item->id;
+                if( $sending_emails['email'] == 'subscribed' ) {
+                    $sending_emails[]['email'] = $item->email_address;
+                }
             }
         }
         return $sending_emails;
@@ -50,7 +51,60 @@ class NS_Email_List {
             $wpdb->insert( $wpdb->prefix . NASLOVAN_STRANA_EMAIL_LIST_TABLE_NAME, $data_to_insert );
 
             // Send Welcome email
-            NS_Email_List::SendWelcomeEmail($email_address);
+            EmailSendingCron::SendWelcomeEmail($email_address);
         }
+    }
+    public static function naslovna_monitor_go()
+    {
+        if ( isset( $_GET['_unsubscribe'] ) && $_GET['_unsubscribe'] == 'true' ) {
+
+            $open_info = base64_decode( $_GET['code'] );
+            if ( strlen( $open_info ) > 0 ) {
+
+                global $wpdb;
+                $table_name = $wpdb->prefix . NASLOVAN_STRANA_EMAIL_LIST_TABLE_NAME;
+                $query      = "UPDATE $table_name SET status=%s, creation_date=%s WHERE email_address=%s;";
+                $sql        = $wpdb->prepare( $query, 'unsubscribed', current_time( 'mysql' ), $open_info );
+                $wpdb->query( $sql );
+                self::unsubscribed_page( $open_info );
+                exit;
+            }
+        }
+    }
+    public static function capture_number_and_email()
+    {
+        if ( isset( $_POST['nss_subscription'] ) ) {
+            if ( isset( $_POST['email_address'] ) ) {
+                $email_address = $_POST['email_address'];
+                $mobile_number = '';
+                if( isset( $_POST['mobile_number'] ) ) {
+                    $mobile_number = $_POST['mobile_number'];
+                }
+                $location_slug = '';
+                if( isset( $_POST['location'] ) ) {
+                    $location_slug = $_POST['location'];
+                }
+                NS_Email_List::add_new_email_to_the_list( $email_address, $mobile_number, $location_slug );
+            }
+        }
+    }
+    public static function unsubscribed_page( $email_address ) {
+        echo '
+			<body style="background-color: #4991C5;">
+			    <div style="width:800px;
+			                margin:70px auto;
+			                text-align: center;
+			                font-family: Arial;
+			                background-color: #fff;
+			                border-radius: 10px;
+			                box-shadow: 0px 2px 4px #5E5E5E;
+			                padding: 20px;">
+
+			        <h2>Uspesno ste se odjavili sa nase email liste!</h2>
+			        <p>Vasa email adresa: <b>' . $email_address . '</b></p>
+			        <p>Vise necete dobijati nove naslovne strane od nas.</p>
+			        <p>Hvala sto se bili deo nase zajednice.</p>
+			    </div>
+			</body>';
     }
 }

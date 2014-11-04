@@ -53,7 +53,7 @@ class EmailSendingCron {
 
         EmailSendingCron::SendEmail( $email_to, $email_subject, $email_body );
     }
-	private function SendEmail( $email_to, $email_subject, $email_body ) {
+	private static function SendEmail( $email_to, $email_subject, $email_body ) {
 
 		$sender_name = "Naslovna Strana";
 		$sender_email = "info@naslovnastrana.com";

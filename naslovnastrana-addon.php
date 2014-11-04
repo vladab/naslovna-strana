@@ -76,26 +76,10 @@ class Naslovna_Strana_Plugin {
     public static function nss_options_page_render() {
         include( NASLOVNA_STRANA_PATH . 'views/Email_Table_View.php' );
     }
-    public static function capture_number_and_email()
-    {
-        if ( isset( $_POST['nss_subscription'] ) ) {
-            if ( isset( $_POST['email_address'] ) ) {
-                $email_address = $_POST['email_address'];
-                $mobile_number = '';
-                if( isset( $_POST['mobile_number'] ) ) {
-                    $mobile_number = $_POST['mobile_number'];
-                }
-                $location_slug = '';
-                if( isset( $_POST['location'] ) ) {
-                    $location_slug = $_POST['location'];
-                }
-                NS_Email_List::add_new_email_to_the_list( $email_address, $mobile_number, $location_slug );
-            }
-        }
-    }
 }
 add_action( 'init', array( 'Naslovna_Strana_Plugin', 'init' )  );
-add_action( 'init', array( 'Naslovna_Strana_Plugin', 'capture_number_and_email' )  );
+add_action( 'init', array( 'NS_Email_List', 'capture_number_and_email' )  );
+add_action( 'init', array( 'NS_Email_List', 'naslovna_monitor_go' ) );
 
 
 ?>
