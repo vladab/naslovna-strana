@@ -5,6 +5,8 @@ Wordpress plugin for extracting front pages of all print newspapers in Serbia an
 
 For a live example visit: [naslovnastrana.com](http://naslovnastrana.com)
 
+![alt tag](http://i.imgur.com/xF1hlc2.png)
+
 Supported newspapers:
  - Blic
  - Vecernje Novosti
@@ -23,5 +25,3 @@ Comics:
  - Novosti Strip
  - Politika Strip
  - Blic Strip
-
-![alt tag](http://i.imgur.com/xF1hlc2.png)
