@@ -5,12 +5,16 @@
  */
 
 function ns_print_input_form() {
-    if ( empty( $report_message ) ) {
-        $report_message = '<p class="error">Doslo je do greske</p>';
-    } else {
-        $report_message = '<p class="success">Uspesna prijava! Uskoro cete dobiti svoje prve naslovne strane.</p>
+    if ( isset( $_POST['email_address'] ) ) {
+        $res = NS_Email_List::check_if_email_in_database( $_POST['email_address'] );
+        if( $res == 'success') {
+            $report_message = '<p class="success">Uspesna prijava! Uskoro cete dobiti svoje prve naslovne strane.</p>
                            <p class="success">Hvala na prijavi!</p>';
-    }
+        } else {
+            $report_message = '<p class="error">Doslo je do greske</p>';
+        }
+    } else
+        $report_message = ''
     ?>
 <div class="ns_headline">
     <form method="post" action="" class="subscrbr-sign-up-form">

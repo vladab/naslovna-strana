@@ -28,6 +28,24 @@ class NS_Email_List {
         }
         return $sending_emails;
     }
+    public static function check_if_email_in_database( $email_address ) {
+
+        if ( strlen( $email_address ) > 0 ) {
+
+            global $wpdb;
+            $table_name = $wpdb->prefix . NASLOVAN_STRANA_EMAIL_LIST_TABLE_NAME;
+            $query      = "SELECT id FROM $table_name WHERE email_address=%s;";
+            $sql        = $wpdb->prepare( $query, $email_address );
+            $results = $wpdb->get_results( $sql );
+            if( count( $results ) > 0 ) {
+                return 'success';
+            } else {
+                return 'error';
+            }
+        } else {
+            return 'error';
+        }
+    }
     public function ns_remove_email_address_ajax() {
         $email_id = $_POST['email_id'];
         if( $email_id > 0 ) {
