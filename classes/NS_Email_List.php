@@ -21,7 +21,7 @@ class NS_Email_List {
         $sending_emails = array();
         if (count($results) > 0) {
             foreach ($results as $item) {
-                if( $sending_emails['email'] == 'subscribed' ) {
+                if( $item->status == 'subscribed' ) {
                     $sending_emails[]['email'] = $item->email_address;
                 }
             }
