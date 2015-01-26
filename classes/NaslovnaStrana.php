@@ -100,13 +100,16 @@ class NaslovnaStrana {
 				if( date('D') == 'Sat' && $source['has_weekends_isue'] == 'no')
 				{
 					$date_shift = date('dmy', strtotime( '-1 day' ));
-					$$href = str_replace( date('dmy'), $date_shift, $href );
+					$href = str_replace( date('dmy'), $date_shift, $href );
 				}
 				elseif ( date('D') == 'Sun' && $source['has_weekends_isue'] == 'no')
 				{
 					$date_shift = date('dmy', strtotime( '-2 day' ));
-					$$href = str_replace( date('dmy'), $date_shift, $href );
+					$href = str_replace( date('dmy'), $date_shift, $href );
 				}
+                if( $source['url'] == 'http://www.24sata.rs/' ) {
+                    $href = 'http://e24.24sata.rs/issues/24sata_'. date('dmy') .'/pages/large/24sata_'. date('dmy') .'-000001.jpg';
+                }
 				break;
 
             case 'pdf_src':
