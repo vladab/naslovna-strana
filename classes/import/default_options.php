@@ -37,7 +37,7 @@ function NS_Front_Page_Data() {
         'Informer' => array(
             'url' => 'http://www.informer.rs/',
             'type' => 'dom_query',
-            'dom_query_string' => '//div[@class="previewizdanja"]/a/img',
+            'dom_query_string' => '//ul[contains(@class, "printversion-slider-ul")]/li[1]/a/img',
             'html_object_src_type' => 'src',
 
             'relative' => true,
@@ -161,7 +161,7 @@ function NS_Email_Data() {
         'Informer' => array(
             'url' => 'http://www.informer.rs/',
             'type' => 'dom_query',
-            'dom_query_string' => '//div[@class="previewizdanja"]/a/img',
+            'dom_query_string' => '//ul[contains(@class, "printversion-slider-ul")]/li[1]/a/img',
             'html_object_src_type' => 'src',
 
             'relative' => true,
@@ -220,6 +220,6 @@ function NS_Email_Data() {
             'override_email_width_value' => '780px',
         ),
     );
-    return $sources;
+    return serialize($sources);
 }
 ?>
